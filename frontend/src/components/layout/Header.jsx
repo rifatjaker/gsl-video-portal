@@ -56,7 +56,7 @@ export default function Header() {
           <Link to="/" className="group flex shrink-0 items-center gap-3" onClick={() => setOpen(false)}>
             <span className="relative">
               <img
-                src="/gsl.png"
+                src={`${import.meta.env.BASE_URL}gsl.png`}
                 alt="Global Study logo"
                 className="h-11 w-11 rounded-xl object-contain transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105"
               />

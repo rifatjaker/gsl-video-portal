@@ -78,7 +78,7 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3">
               <img
-                src="/gsl.png"
+                src={`${import.meta.env.BASE_URL}gsl.png`}
                 alt="Global Study logo"
                 className="h-12 w-12 rounded-xl bg-white object-contain p-0.5 shadow-lg shadow-black/30"
               />

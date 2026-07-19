@@ -4,9 +4,11 @@ import Home from './pages/Home'
 import Videos from './pages/Videos'
 import VideoDetail from './pages/VideoDetail'
 
+const basename = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/'
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename === '/' ? undefined : basename}>
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
