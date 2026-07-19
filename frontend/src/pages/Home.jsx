@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import FeaturedRow from '../components/video/FeaturedRow'
 import HeroSlider from '../components/video/HeroSlider'
+import NewsTicker from '../components/video/NewsTicker'
 import VideoCard from '../components/video/VideoCard'
 import CategoryChips from '../components/video/CategoryChips'
 import Pagination from '../components/video/Pagination'
@@ -74,6 +75,8 @@ export default function Home() {
 
           <HeroSlider videos={featured} />
         </div>
+
+        <NewsTicker />
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">

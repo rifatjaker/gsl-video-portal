@@ -39,6 +39,18 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
+.news-ticker-track {
+  width: max-content;
+  animation: ticker-scroll 40s linear infinite;
+}
+.news-ticker:hover .news-ticker-track {
+  animation-play-state: paused;
+}
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
