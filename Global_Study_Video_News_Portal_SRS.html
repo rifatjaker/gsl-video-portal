@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SRS — Global Study Video News Portal | A2 Technologies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-blue: #2f72b4;
+    --brand-blue-light: #4aa3e0;
+    --brand-slate: #44505f;
+    --brand-ink: #2c3743;
+    --ink: #1f2937;
+    --muted: #64748b;
+    --line: #e6eaf0;
+    --bg: #eef2f7;
+    --paper: #ffffff;
+    --soft: #f6f9fc;
+    --soft2: #eff5fb;
+    --green: #1f9d6b;
+    --amber: #d98b1e;
+    --red: #d9534f;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 85% -5%, #dce8f5 0%, transparent 55%),
+      radial-gradient(900px 500px at -10% 110%, #e3ecf5 0%, transparent 55%),
+      var(--bg);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .layout { max-width: 900px; margin: 0 auto; padding: 28px 18px 60px; }
+
+  /* ===== Cover ===== */
+  .cover {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #2c3743 0%, #285f96 55%, var(--brand-blue) 100%);
+    color: #fff; border-radius: 22px; padding: 50px 46px 42px;
+    box-shadow: 0 34px 70px -28px rgba(31,50,80,0.55);
+  }
+  .cover::before {
+    content: ""; position: absolute; top: -140px; right: -120px; width: 420px; height: 420px;
+    border-radius: 50%; background: radial-gradient(circle at center, rgba(74,163,224,0.55), transparent 65%);
+  }
+  .cover .inner { position: relative; z-index: 1; }
+  .cover .cover-logo { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+  .cover .cover-mark {
+    width: 56px; height: 56px; border-radius: 14px; background: #fff; color: var(--brand-blue);
+    font-weight: 900; font-size: 25px; display: grid; place-items: center;
+    box-shadow: 0 10px 24px -8px rgba(0,0,0,0.4);
+  }
+  .cover .cover-mark span { font-size: 14px; transform: translateY(-5px); }
+  .cover .cover-logo .lt b { font-size: 16px; letter-spacing: .5px; display:block; }
+  .cover .cover-logo .lt small { font-size: 11px; font-style: italic; opacity: .85; }
+  .cover .badge {
+    display: inline-block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    background: rgba(255,255,255,0.16); padding: 6px 14px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.25); margin-bottom: 18px;
+  }
+  .cover h1 { font-size: 34px; font-weight: 900; line-height: 1.15; letter-spacing: -0.5px; }
+  .cover .sub { font-size: 16px; opacity: 0.9; margin-top: 10px; font-weight: 500; }
+  .cover .meta-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.18);
+  }
+  .cover .meta-grid .k { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7; }
+  .cover .meta-grid .v { font-size: 14px; font-weight: 600; margin-top: 2px; }
+
+  /* ===== Section ===== */
+  .section {
+    background: var(--paper); border-radius: var(--radius); padding: 28px 32px; margin-top: 22px;
+    box-shadow: 0 18px 44px -28px rgba(31,50,80,0.3); border: 1px solid var(--line);
+  }
+  .section-head { display: flex; align-items: center; gap: 13px; margin-bottom: 18px; }
+  .section-head .num {
+    width: 38px; height: 38px; flex-shrink: 0; border-radius: 11px;
+    background: linear-gradient(140deg, var(--brand-blue), var(--brand-blue-light));
+    color: #fff; font-weight: 800; font-size: 15px; display: grid; place-items: center;
+    box-shadow: 0 8px 16px -8px rgba(47,114,180,0.7);
+  }
+  .section-head h2 { font-size: 21px; font-weight: 800; color: var(--brand-ink); letter-spacing: -0.3px; }
+  .section p { color: #374151; }
+
+  /* ===== Module chips ===== */
+  .mod-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .mod {
+    display: flex; align-items: center; gap: 12px; border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px 16px; background: linear-gradient(180deg,#fff,var(--soft));
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .mod:hover { transform: translateY(-2px); box-shadow: 0 14px 26px -18px rgba(47,114,180,0.5); }
+  .mod .ic { width: 34px; height: 34px; flex-shrink:0; border-radius: 9px; background: var(--soft2);
+    color: var(--brand-blue); display: grid; place-items: center; font-size: 16px; }
+  .mod .mn { font-size: 14px; font-weight: 600; color: var(--brand-ink); }
+
+  /* ===== Tech chips ===== */
+  .chip { display:inline-block; font-size:12.5px; font-weight:500; background:var(--soft);
+    border:1px solid var(--line); color:var(--brand-ink); padding:6px 13px; border-radius:8px;
+    margin:4px 6px 4px 0; font-family:"JetBrains Mono", monospace; }
+
+  /* ===== Workflow ===== */
+  .workflow { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 4px 0; }
+  .wf-step {
+    width: 100%; max-width: 340px; text-align: center;
+    border-radius: 12px; padding: 14px 18px; font-weight: 700; font-size: 14.5px;
+    border: 1.5px solid var(--brand-blue-light); background: linear-gradient(180deg,#fff,var(--soft2));
+    color: var(--brand-blue); box-shadow: 0 6px 14px -10px rgba(47,114,180,0.6);
+  }
+  .wf-step .wf-sub { display:block; font-weight: 500; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .wf-step.start { border-color: var(--brand-slate); color: var(--brand-ink); }
+  .wf-step.pending { border-color: var(--amber); color: var(--amber); background: linear-gradient(180deg,#fff,#fdf4e6); }
+  .wf-step.review { border-color: var(--brand-blue); }
+  .wf-step.approved { border-color: var(--green); color: var(--green); background: linear-gradient(180deg,#fff,#e9f7f0); }
+  .wf-step.published { border-color: var(--green); color: #fff;
+    background: linear-gradient(135deg, #1f9d6b, #14855a); }
+  .wf-step.published .wf-sub { color: rgba(255,255,255,0.88); }
+  .wf-arrow { width: 2px; height: 26px; background: linear-gradient(var(--brand-blue-light), var(--brand-blue)); position: relative; }
+  .wf-arrow::after { content:""; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+    border-left:6px solid transparent; border-right:6px solid transparent; border-top:8px solid var(--brand-blue); }
+
+  /* ===== Commercial table ===== */
+  table.price { width: 100%; border-collapse: collapse; font-size: 14px; border-radius: 10px; overflow: hidden; }
+  table.price thead th {
+    background: linear-gradient(90deg, var(--brand-blue), var(--brand-blue-light)); color: #fff;
+    text-align: left; padding: 13px 16px; font-weight: 600;
+  }
+  table.price thead th.num { text-align: right; }
+  table.price tbody td { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  table.price tbody td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--brand-ink); }
+  table.price tbody tr:nth-child(even) { background: var(--soft); }
+  table.price tbody tr:hover { background: var(--soft2); }
+  table.price tfoot td {
+    padding: 15px 16px; font-size: 15px; font-weight: 800; color: #fff;
+    background: linear-gradient(135deg, var(--brand-ink), #1d2730);
+  }
+  table.price tfoot td.num { text-align: right; }
+
+  /* ===== Package card ===== */
+  .pkg { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 16px 36px -26px rgba(31,50,80,0.4); }
+  .pkg-head {
+    display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap;
+    background: linear-gradient(135deg, var(--brand-ink), #285f96); color: #fff; padding: 24px 28px;
+  }
+  .pkg-name { font-size: 19px; font-weight: 800; }
+  .pkg-desc { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+  .pkg-price { display: flex; align-items: baseline; gap: 6px; }
+  .pkg-price .amt { font-size: 38px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
+  .pkg-price .cur { font-size: 15px; font-weight: 700; opacity: 0.9; }
+  .pkg-body { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 18px; padding: 24px 28px; background: var(--paper); }
+  .pkg-feat { font-size: 13.5px; color: #374151; font-weight: 500; }
+  .pkg-feat::first-letter { color: var(--green); }
+  @media (max-width: 620px) { .pkg-body { grid-template-columns: 1fr; } }
+
+  .timeline-badge {
+    display:inline-flex; align-items:center; gap:10px; background: var(--soft2);
+    border: 1px solid #d6e6f5; border-radius: 12px; padding: 14px 20px; font-size: 15px; color: var(--brand-ink);
+  }
+  .timeline-badge .big { font-size: 22px; font-weight: 800; color: var(--brand-blue); }
+
+  /* ===== Signoff ===== */
+  .signoff { margin-top: 22px; background: linear-gradient(135deg, var(--brand-ink), #1d2730);
+    color: #fff; border-radius: 18px; padding: 30px 32px; }
+  .signoff h3 { color: #fff; font-size: 17px; margin-bottom: 6px; }
+  .signoff .dev { font-size: 15px; font-weight: 700; margin-top: 10px; }
+  .signoff .role { font-size: 13px; opacity: 0.82; }
+
+  .fab { position: fixed; right: 22px; bottom: 22px; z-index: 50; border: none; cursor: pointer;
+    background: var(--brand-blue); color: #fff; padding: 13px 20px; border-radius: 999px;
+    font-size: 13px; font-weight: 600; font-family: inherit;
+    box-shadow: 0 12px 26px -10px rgba(47,114,180,0.9); transition: transform .15s ease, background .15s ease; }
+  .fab:hover { background: #285f96; transform: translateY(-2px); }
+
+  @media (max-width: 620px) {
+    .mod-grid, .cover .meta-grid { grid-template-columns: 1fr; }
+    .cover { padding: 36px 24px; } .cover h1 { font-size: 26px; }
+    .section { padding: 22px 20px; }
+  }
+  @media print {
+    body { background: #fff; } .fab { display: none; }
+    .layout { max-width: 100%; padding: 0; }
+    .section, .cover, .signoff { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .cover, table.price thead th, table.price tfoot td, .wf-step { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<button class="fab" onclick="window.print()">⬇ Download / Print PDF</button>
+
+<div class="layout">
+
+  <!-- Cover -->
+  <header class="cover">
+    <div class="inner">
+      <div class="cover-logo">
+        <div class="cover-mark">A<span>2</span></div>
+        <div class="lt"><b>A2 TECHNOLOGIES</b><small>From Point A to the Future.</small></div>
+      </div>
+      <span class="badge">Software Requirements Specification</span>
+      <h1>Global Study<br />Video News Portal</h1>
+      <div class="sub">A web portal for educational news &amp; YouTube videos with an admin approval workflow.</div>
+      <div class="meta-grid">
+        <div><div class="k">Prepared By</div><div class="v">A2 Technologies</div></div>
+        <div><div class="k">Developer</div><div class="v">Imam Hossain (Rifat)</div></div>
+        <div><div class="k">Timeline</div><div class="v">10–11 Weeks</div></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. Overview -->
+  <section class="section">
+    <div class="section-head"><div class="num">1</div><h2>Overview</h2></div>
+    <p>Web portal for educational news and YouTube videos with an admin approval workflow. The platform allows agencies and universities to submit content, which is reviewed and published by administrators, with built-in SEO and analytics.</p>
+  </section>
+
+  <!-- 2. Modules -->
+  <section class="section">
+    <div class="section-head"><div class="num">2</div><h2>Modules</h2></div>
+    <div class="mod-grid">
+      <div class="mod"><div class="ic">🌐</div><div class="mn">Public Website</div></div>
+      <div class="mod"><div class="ic">📊</div><div class="mn">Admin Dashboard</div></div>
+      <div class="mod"><div class="ic">🏢</div><div class="mn">Agency Portal</div></div>
+      <div class="mod"><div class="ic">🎓</div><div class="mn">University Portal</div></div>
+      <div class="mod"><div class="ic">▶</div><div class="mn">Video Submission</div></div>
+      <div class="mod"><div class="ic">📰</div><div class="mn">News Management</div></div>
+      <div class="mod"><div class="ic">🔍</div><div class="mn">SEO</div></div>
+      <div class="mod"><div class="ic">📈</div><div class="mn">Analytics</div></div>
+    </div>
+  </section>
+
+  <!-- 3. Portal Features -->
+  <section class="section">
+    <div class="section-head"><div class="num">3</div><h2>Portal Features</h2></div>
+
+    <h3 style="font-size:15px;font-weight:700;color:var(--brand-blue);margin-bottom:12px;display:flex;align-items:center;gap:8px;">🌐 Public Portal</h3>
+    <div class="mod-grid">
+      <div class="mod"><div class="ic">📋</div><div class="mn">Video Listing</div></div>
+      <div class="mod"><div class="ic">🔍</div><div class="mn">Search Videos</div></div>
+      <div class="mod"><div class="ic">🗂️</div><div class="mn">Category Browsing</div></div>
+      <div class="mod"><div class="ic">⭐</div><div class="mn">Featured Videos</div></div>
+    </div>
+
+    <h3 style="font-size:15px;font-weight:700;color:var(--brand-blue);margin:22px 0 12px;display:flex;align-items:center;gap:8px;">📤 Contributor Portal</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Submit Video — required fields:</p>
+    <div class="mod-grid">
+      <div class="mod"><div class="ic">🔤</div><div class="mn">Title</div></div>
+      <div class="mod"><div class="ic">📝</div><div class="mn">Description</div></div>
+      <div class="mod"><div class="ic">▶</div><div class="mn">YouTube URL</div></div>
+      <div class="mod"><div class="ic">🖼️</div><div class="mn">Thumbnail</div></div>
+      <div class="mod"><div class="ic">🗂️</div><div class="mn">Category</div></div>
+      <div class="mod"><div class="ic">🏷️</div><div class="mn">Tags</div></div>
+    </div>
+    <div class="badges" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+      <span style="font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;background:#fdf2e0;color:var(--amber);border:1px solid #f5e0b8;">Pending</span>
+      <span style="font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;background:#e7f6ef;color:var(--green);border:1px solid #bfe8d4;">Approved</span>
+      <span style="font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;background:#fbe9e8;color:var(--red);border:1px solid #f3c9c7;">Rejected</span>
+    </div>
+
+    <h3 style="font-size:15px;font-weight:700;color:var(--brand-blue);margin:22px 0 12px;display:flex;align-items:center;gap:8px;">🛡️ Admin Moderation</h3>
+    <div class="mod-grid">
+      <div class="mod"><div class="ic">🔎</div><div class="mn">Review Submissions</div></div>
+      <div class="mod"><div class="ic">✅</div><div class="mn">Approve Videos</div></div>
+      <div class="mod"><div class="ic">❌</div><div class="mn">Reject Videos</div></div>
+      <div class="mod"><div class="ic">🗂️</div><div class="mn">Manage Categories</div></div>
+      <div class="mod"><div class="ic">⭐</div><div class="mn">Manage Featured Content</div></div>
+    </div>
+
+    <h3 style="font-size:15px;font-weight:700;color:var(--brand-blue);margin:22px 0 12px;display:flex;align-items:center;gap:8px;">🎬 Video Categories</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <span class="chip" style="font-family:inherit;">Study Abroad News</span>
+      <span class="chip" style="font-family:inherit;">Scholarship Updates</span>
+      <span class="chip" style="font-family:inherit;">University News</span>
+      <span class="chip" style="font-family:inherit;">Visa News</span>
+      <span class="chip" style="font-family:inherit;">Immigration News</span>
+      <span class="chip" style="font-family:inherit;">Student Experiences</span>
+      <span class="chip" style="font-family:inherit;">Education Fair</span>
+    </div>
+  </section>
+
+  <!-- 4. Workflow -->
+  <section class="section">
+    <div class="section-head"><div class="num">4</div><h2>Content Approval Workflow</h2></div>
+    <div class="workflow">
+      <div class="wf-step start">Agency Login<span class="wf-sub">Authenticated agency / university user</span></div>
+      <div class="wf-arrow"></div>
+      <div class="wf-step">Submit Video<span class="wf-sub">Title, description, YouTube URL, category</span></div>
+      <div class="wf-arrow"></div>
+      <div class="wf-step pending">Pending<span class="wf-sub">Awaiting moderation</span></div>
+      <div class="wf-arrow"></div>
+      <div class="wf-step review">Admin Review<span class="wf-sub">Approve or reject submission</span></div>
+      <div class="wf-arrow"></div>
+      <div class="wf-step approved">Approved<span class="wf-sub">Cleared for publishing</span></div>
+      <div class="wf-arrow"></div>
+      <div class="wf-step published">Published<span class="wf-sub text-white">Live on the public website</span></div>
+    </div>
+  </section>
+
+  <!-- 5. Technology -->
+  <section class="section">
+    <div class="section-head"><div class="num">5</div><h2>Technology</h2></div>
+    <span class="chip">React (Vite)</span>
+    <span class="chip">PHP 8 REST API</span>
+    <span class="chip">MySQL 8</span>
+    <span class="chip">JWT</span>
+    <span class="chip">Tailwind CSS</span>
+  </section>
+
+  <!-- 6. Timeline -->
+  <section class="section">
+    <div class="section-head"><div class="num">6</div><h2>Timeline</h2></div>
+    <div class="timeline-badge"><span class="big">10–11</span> Weeks estimated delivery</div>
+  </section>
+
+  <!-- 7. Commercial Proposal -->
+  <section class="section">
+    <div class="section-head"><div class="num">7</div><h2>Commercial Proposal</h2></div>
+    <div class="pkg">
+      <div class="pkg-head">
+        <div>
+          <div class="pkg-name">Complete Portal Package</div>
+          <div class="pkg-desc">End-to-end design, development &amp; delivery</div>
+        </div>
+        <div class="pkg-price">
+          <span class="amt">70,000</span>
+          <span class="cur">BDT</span>
+        </div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-feat">✔ Requirement &amp; UI</div>
+        <div class="pkg-feat">✔ Public Website</div>
+        <div class="pkg-feat">✔ Admin Dashboard</div>
+        <div class="pkg-feat">✔ Agency Portal</div>
+        <div class="pkg-feat">✔ University Portal</div>
+        <div class="pkg-feat">✔ Video &amp; News Management</div>
+        <div class="pkg-feat">✔ SEO Optimization</div>
+        <div class="pkg-feat">✔ Security</div>
+        <div class="pkg-feat">✔ Testing &amp; QA</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;font-weight:700;color:var(--brand-blue);margin:26px 0 12px;display:flex;align-items:center;gap:8px;">🛠️ Maintenance &amp; Support <span style="font-size:11px;font-weight:600;color:var(--muted);">(Optional · Monthly)</span></h3>
+    <div class="pkg">
+      <div class="pkg-head" style="background:linear-gradient(135deg,#1f9d6b,#14855a);">
+        <div>
+          <div class="pkg-name">Maintenance &amp; Support Plan</div>
+          <div class="pkg-desc">Keep the portal secure, updated &amp; running smoothly</div>
+        </div>
+        <div class="pkg-price">
+          <span class="amt">3,000</span>
+          <span class="cur">BDT / month</span>
+        </div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-feat">✔ Uptime &amp; Security Monitoring</div>
+        <div class="pkg-feat">✔ Regular Backups</div>
+        <div class="pkg-feat">✔ Security Patches &amp; Updates</div>
+        <div class="pkg-feat">✔ Bug Fixes</div>
+        <div class="pkg-feat">✔ Content / Video Update Support</div>
+        <div class="pkg-feat">✔ Email Support</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;">Hosting &amp; domain billed at actuals. 30-day free bug-fix warranty after launch. Minimum 3-month commitment for the monthly plan.</p>
+  </section>
+
+  <!-- Signoff -->
+  <section class="signoff">
+    <h3>Prepared By</h3>
+    <p style="opacity:.9;">A2 Technologies — From Point A to the Future.</p>
+    <div class="dev">Imam Hossain (Rifat)</div>
+    <div class="role">Full-Stack &amp; Android App Developer · A2 Technologies</div>
+  </section>
+
+</div>
+</body>
+</html>
