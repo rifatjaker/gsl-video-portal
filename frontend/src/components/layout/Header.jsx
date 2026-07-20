@@ -3,9 +3,9 @@ import { useState } from 'react'
 import {
   Home,
   PlaySquare,
-  GraduationCap,
-  Stamp,
-  Newspaper,
+  BookOpen,
+  CalendarRange,
+  MessageSquareHeart,
   Menu,
   X,
 } from 'lucide-react'
@@ -14,9 +14,9 @@ import SearchBar from '../video/SearchBar'
 const NAV_ITEMS = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/videos', label: 'Videos', icon: PlaySquare },
-  { to: '/videos?category=Scholarship%20Updates', label: 'Scholarships', icon: GraduationCap },
-  { to: '/videos?category=Visa%20News', label: 'Visa News', icon: Stamp },
-  { to: '/videos?category=University%20News', label: 'University', icon: Newspaper },
+  { to: '/news', label: 'News', icon: BookOpen },
+  { to: '/events', label: 'Events', icon: CalendarRange },
+  { to: '/inquiry', label: 'Student Inquiry', icon: MessageSquareHeart },
 ]
 
 const linkClass = (isActive) =>

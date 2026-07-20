@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ArrowRight,
+  BookOpen,
+  CalendarRange,
   Clapperboard,
   Compass,
   LayoutGrid,
@@ -14,16 +16,23 @@ import {
 import FeaturedRow from '../components/video/FeaturedRow'
 import HeroSlider from '../components/video/HeroSlider'
 import NewsTicker from '../components/video/NewsTicker'
+import NewsCard from '../components/news/NewsCard'
+import EventCard from '../components/events/EventCard'
 import VideoCard from '../components/video/VideoCard'
 import CategoryChips from '../components/video/CategoryChips'
 import Pagination from '../components/video/Pagination'
+import NewsletterSignup from '../components/newsletter/NewsletterSignup'
 import { getFeaturedVideos, getLatestVideos } from '../data/mockVideos'
+import { getLatestArticles } from '../data/mockNews'
+import { getUpcomingEvents } from '../data/mockEvents'
 
 const PER_PAGE = 6
 
 export default function Home() {
   const featured = getFeaturedVideos()
   const latest = getLatestVideos(Infinity)
+  const latestNews = getLatestArticles(3)
+  const upcomingEvents = getUpcomingEvents(3)
 
   const [page, setPage] = useState(1)
   const totalPages = Math.ceil(latest.length / PER_PAGE)
@@ -108,6 +117,74 @@ export default function Home() {
         <FeaturedRow videos={featured} />
       </section>
 
+      <section className="border-y border-line bg-white/70">
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <span className="relative grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-light shadow-lg shadow-brand/30">
+                <BookOpen size={25} className="text-white" />
+                <span className="absolute -right-1.5 -top-1.5 grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br from-red-500 to-red-600 shadow-md">
+                  <Sparkles size={13} className="text-white" />
+                </span>
+              </span>
+              <div>
+                <h2 className="bg-gradient-to-r from-brand-dark via-brand to-red-500 bg-clip-text font-display text-3xl font-bold tracking-tight text-transparent">
+                  News Articles
+                </h2>
+                <p className="mt-1 text-sm font-medium text-muted">
+                  Latest written updates from Global Study
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/news"
+              className="group inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/5 px-4 py-2 text-sm font-bold text-brand transition hover:border-brand hover:bg-brand hover:text-white"
+            >
+              View all
+              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {latestNews.map((article) => (
+              <NewsCard key={article.id} article={article} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <span className="relative grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-dark to-brand shadow-lg shadow-brand/30">
+              <CalendarRange size={25} className="text-white" />
+              <span className="absolute -right-1.5 -top-1.5 grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br from-red-500 to-red-600 shadow-md text-[9px] font-bold text-white">
+                Fair
+              </span>
+            </span>
+            <div>
+              <h2 className="bg-gradient-to-r from-brand-dark via-brand to-red-500 bg-clip-text font-display text-3xl font-bold tracking-tight text-transparent">
+                Upcoming events
+              </h2>
+              <p className="mt-1 text-sm font-medium text-muted">
+                Education fairs &amp; counselling camps
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/events"
+            className="group inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/5 px-4 py-2 text-sm font-bold text-brand transition hover:border-brand hover:bg-brand hover:text-white"
+          >
+            View all
+            <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {upcomingEvents.map((event) => (
+            <EventCard key={event.id} event={event} />
+          ))}
+        </div>
+      </section>
+
       <section className="border-y border-line bg-white/60">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -165,6 +242,10 @@ export default function Home() {
         </div>
 
         <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-14 sm:px-6">
+        <NewsletterSignup />
       </section>
     </div>
   )

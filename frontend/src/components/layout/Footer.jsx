@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, ChevronRight } from 'lucide-react'
+import NewsletterSignup from '../newsletter/NewsletterSignup'
 
 const Facebook = ({ size = 19 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -57,9 +58,9 @@ const SOCIALS = [
 const EXPLORE_LINKS = [
   { to: '/', label: 'Home' },
   { to: '/videos', label: 'All Videos' },
-  { to: '/videos?category=Scholarship%20Updates', label: 'Scholarship Updates' },
-  { to: '/videos?category=Visa%20News', label: 'Visa News' },
-  { to: '/videos?category=Education%20Fair', label: 'Education Fairs' },
+  { to: '/news', label: 'News Articles' },
+  { to: '/events', label: 'Events & Fairs' },
+  { to: '/inquiry', label: 'Student Inquiry' },
 ]
 
 export default function Footer() {
@@ -107,6 +108,10 @@ export default function Footer() {
                   <Icon size={19} />
                 </a>
               ))}
+            </div>
+
+            <div className="mt-8">
+              <NewsletterSignup variant="footer" />
             </div>
           </div>
 
