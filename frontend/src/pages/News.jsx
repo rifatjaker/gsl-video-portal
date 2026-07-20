@@ -2,14 +2,24 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { BookOpen, Search } from 'lucide-react'
 import NewsCard from '../components/news/NewsCard'
+import CountryChips from '../components/video/CountryChips'
 import Pagination from '../components/video/Pagination'
 import { NEWS_CATEGORIES, filterArticles } from '../data/mockNews'
 
 const PER_PAGE = 3
 
+function categoryTo(cat, country) {
+  const params = new URLSearchParams()
+  if (cat && cat !== 'All') params.set('category', cat)
+  if (country && country !== 'All') params.set('country', country)
+  const qs = params.toString()
+  return qs ? `/news?${qs}` : '/news'
+}
+
 export default function News() {
   const [params] = useSearchParams()
   const category = params.get('category') || 'All'
+  const country = params.get('country') || 'All'
   const urlQuery = params.get('q') || ''
   const [query, setQuery] = useState(urlQuery)
   const [page, setPage] = useState(1)
@@ -20,16 +30,23 @@ export default function News() {
 
   useEffect(() => {
     setPage(1)
-  }, [query, category])
+  }, [query, category, country])
 
   const results = useMemo(
-    () => filterArticles({ query, category }),
-    [query, category],
+    () => filterArticles({ query, category, country }),
+    [query, category, country],
   )
 
   const totalPages = Math.max(1, Math.ceil(results.length / PER_PAGE))
   const pageArticles = results.slice((page - 1) * PER_PAGE, page * PER_PAGE)
   const chips = ['All', ...NEWS_CATEGORIES]
+
+  const filterLabel = [
+    category !== 'All' ? category : null,
+    country !== 'All' ? country : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
@@ -46,7 +63,7 @@ export default function News() {
               News Articles
             </h1>
             <p className="mt-1 text-sm font-medium text-muted">
-              Study-abroad news, scholarships, visas &amp; policy updates
+              Filter by country, category &amp; keyword
             </p>
           </div>
         </div>
@@ -70,35 +87,43 @@ export default function News() {
         </label>
         <p className="text-sm text-muted">
           {results.length} article{results.length === 1 ? '' : 's'}
-          {category !== 'All' ? ` in ${category}` : ''}
+          {filterLabel ? ` in ${filterLabel}` : ''}
           {results.length > 0 ? ` · page ${page} of ${totalPages}` : ''}
         </p>
       </div>
 
-      <div className="mb-8 flex flex-wrap gap-2">
-        {chips.map((cat) => {
-          const isActive = category === cat
-          const to = cat === 'All' ? '/news' : `/news?category=${encodeURIComponent(cat)}`
-          return (
-            <Link
-              key={cat}
-              to={to}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
-                isActive
-                  ? 'bg-gradient-to-r from-brand to-brand-light text-white shadow-md shadow-brand/30'
-                  : 'border border-line bg-white text-ink/70 hover:border-brand/40 hover:text-brand'
-              }`}
-            >
-              {cat}
-            </Link>
-          )
-        })}
+      <div className="mb-5">
+        <CountryChips active={country} category={category} basePath="/news" />
+      </div>
+
+      <div className="mb-8">
+        <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Category</p>
+        <div className="flex flex-wrap gap-2">
+          {chips.map((cat) => {
+            const isActive = category === cat
+            return (
+              <Link
+                key={cat}
+                to={categoryTo(cat, country)}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+                  isActive
+                    ? 'bg-gradient-to-r from-brand to-brand-light text-white shadow-md shadow-brand/30'
+                    : 'border border-line bg-white text-ink/70 hover:border-brand/40 hover:text-brand'
+                }`}
+              >
+                {cat}
+              </Link>
+            )
+          })}
+        </div>
       </div>
 
       {results.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-line bg-white px-6 py-16 text-center">
           <p className="font-display text-xl font-semibold text-ink">No articles found</p>
-          <p className="mt-2 text-sm text-muted">Try another keyword or clear the category filter.</p>
+          <p className="mt-2 text-sm text-muted">
+            Try another country, category, or clear the filters.
+          </p>
         </div>
       ) : (
         <>

@@ -22,6 +22,23 @@ export default function NewsCard({ article }) {
         <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand">
           {article.category}
         </p>
+        {(article.countries || []).length > 0 && (
+          <div className="mt-1.5 flex flex-wrap items-center gap-1">
+            {(article.countries || []).slice(0, 2).map((c) => (
+              <span
+                key={c}
+                className="rounded-full bg-soft2 px-2 py-0.5 text-[10px] font-bold text-ink/70"
+              >
+                {c}
+              </span>
+            ))}
+            {(article.countries || []).length > 2 && (
+              <span className="text-[10px] font-bold text-muted">
+                +{article.countries.length - 2}
+              </span>
+            )}
+          </div>
+        )}
         <h3 className="mt-1.5 line-clamp-2 font-display text-[17px] font-semibold leading-snug text-ink group-hover:text-brand">
           {article.title}
         </h3>

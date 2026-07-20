@@ -28,6 +28,7 @@ For personalised guidance, contact Global Study Ltd. or speak with your counsell
     cover:
       'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80',
     category: 'Visa News',
+    countries: ['Canada'],
     tags: ['Canada', 'Study Permit', 'IRCC'],
     featured: true,
     publishedAt: '2026-07-18',
@@ -49,6 +50,7 @@ Global Study partners can help shortlist eligible programmes and review applicat
     cover:
       'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80',
     category: 'Scholarship Updates',
+    countries: ['Malaysia'],
     tags: ['Malaysia', 'Scholarship', 'Undergraduate'],
     featured: true,
     publishedAt: '2026-07-15',
@@ -68,6 +70,7 @@ Global Study Ltd. will operate a help desk for SOP reviews and post-fair follow-
     cover:
       'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80',
     category: 'Education Fair',
+    countries: ['UK'],
     tags: ['UK', 'Education Fair', 'Dhaka'],
     featured: false,
     publishedAt: '2026-07-12',
@@ -87,6 +90,7 @@ This article summarises the main streams and documents typically requested by th
     cover:
       'https://images.unsplash.com/photo-1506973035872-a4ff11a6e18c?w=1200&q=80',
     category: 'Immigration News',
+    countries: ['Australia'],
     tags: ['Australia', 'Graduate Visa', 'PR'],
     featured: true,
     publishedAt: '2026-07-08',
@@ -106,6 +110,7 @@ Counsellors at Global Study Ltd. recommend one personal story, measurable achiev
     cover:
       'https://images.unsplash.com/photo-1456513080800-b6bbea7b0b87?w=1200&q=80',
     category: 'Scholarship Updates',
+    countries: ['Canada', 'UK', 'Australia'],
     tags: ['SOP', 'Interview', 'Tips'],
     featured: false,
     publishedAt: '2026-07-03',
@@ -123,6 +128,7 @@ Auckland, Wellington, and Otago each offer different student lifestyles. Course 
     cover:
       'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&q=80',
     category: 'University News',
+    countries: ['New Zealand'],
     tags: ['New Zealand', 'Rankings', 'Courses'],
     featured: false,
     publishedAt: '2026-06-28',
@@ -142,6 +148,7 @@ Global Study counsellors can help schedule speaking practice sessions and review
     cover:
       'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80',
     category: 'Study Abroad News',
+    countries: ['Canada', 'UK', 'Australia', 'USA', 'New Zealand', 'Malaysia', 'South Korea'],
     tags: ['IELTS', 'English', 'Preparation'],
     featured: false,
     publishedAt: '2026-06-22',
@@ -161,6 +168,7 @@ Keep both digital scans and clear paper copies ready for embassy or university r
     cover:
       'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80',
     category: 'Study Abroad News',
+    countries: ['Canada', 'UK', 'Australia', 'USA', 'New Zealand', 'Malaysia', 'South Korea'],
     tags: ['Documents', 'Checklist', 'Application'],
     featured: false,
     publishedAt: '2026-06-18',
@@ -180,6 +188,7 @@ Always confirm deposit rules, contract length, and proximity to campus before pa
     cover:
       'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=80',
     category: 'Study Abroad News',
+    countries: ['Canada', 'UK', 'Australia', 'USA', 'New Zealand', 'Malaysia', 'South Korea'],
     tags: ['Accommodation', 'Living', 'Students'],
     featured: false,
     publishedAt: '2026-06-12',
@@ -202,17 +211,20 @@ export function getLatestArticles(limit = 6) {
     .slice(0, limit)
 }
 
-export function filterArticles({ query = '', category = 'All' } = {}) {
+export function filterArticles({ query = '', category = 'All', country = 'All' } = {}) {
   const q = query.trim().toLowerCase()
   return articles.filter((a) => {
     const matchCategory = category === 'All' || a.category === category
+    const matchCountry =
+      country === 'All' || (a.countries || []).includes(country)
     const matchQuery =
       !q ||
       a.title.toLowerCase().includes(q) ||
       a.summary.toLowerCase().includes(q) ||
       a.content.toLowerCase().includes(q) ||
       a.tags.some((t) => t.toLowerCase().includes(q)) ||
-      a.category.toLowerCase().includes(q)
-    return matchCategory && matchQuery
+      a.category.toLowerCase().includes(q) ||
+      (a.countries || []).some((c) => c.toLowerCase().includes(q))
+    return matchCategory && matchCountry && matchQuery
   })
 }

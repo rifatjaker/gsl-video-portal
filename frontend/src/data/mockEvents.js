@@ -23,6 +23,7 @@ Please bring academic transcripts and a valid ID. Pre-registration is recommende
     address: '1 Minto Road, Shahbag, Dhaka 1000',
     city: 'Dhaka',
     country: 'Bangladesh',
+    countries: ['UK'],
     category: 'Education Fair',
     cover:
       'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80',
@@ -47,6 +48,7 @@ Walk-ins welcome; priority given to pre-registered students.`,
     address: '3rd floor, BSL Office Complex, 1 Minto Road',
     city: 'Dhaka',
     country: 'Bangladesh',
+    countries: ['Canada'],
     category: 'Counselling Camp',
     cover:
       'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80',
@@ -71,6 +73,7 @@ Parents are welcome to attend with students.`,
     address: '1 Minto Road, Dhaka 1000',
     city: 'Dhaka',
     country: 'Bangladesh',
+    countries: ['Australia', 'New Zealand'],
     category: 'Education Fair',
     cover:
       'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1200&q=80',
@@ -95,6 +98,7 @@ Zoom link will be sent after registration.`,
     address: 'Link sent by WhatsApp / email',
     city: 'Online',
     country: 'Malaysia',
+    countries: ['Malaysia'],
     category: 'Webinar',
     cover:
       'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=1200&q=80',
@@ -119,6 +123,7 @@ Bring a printed CV and draft SOP.`,
     address: '3rd floor, BSL Office Complex',
     city: 'Dhaka',
     country: 'Bangladesh',
+    countries: ['Canada', 'UK', 'Australia', 'USA', 'New Zealand', 'Malaysia', 'South Korea'],
     category: 'Open Day',
     cover:
       'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80',
@@ -143,6 +148,7 @@ Registration required for seating.`,
     address: '1 Minto Road, Dhaka 1000',
     city: 'Dhaka',
     country: 'Bangladesh',
+    countries: ['South Korea'],
     category: 'Education Fair',
     cover:
       'https://images.unsplash.com/photo-1517154423619-4abcb605db0d?w=1200&q=80',
@@ -165,7 +171,7 @@ export function getUpcomingEvents(limit = 6) {
     .slice(0, limit)
 }
 
-export function filterEvents({ category = 'All', month = 'All' } = {}) {
+export function filterEvents({ category = 'All', month = 'All', country = 'All' } = {}) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
@@ -173,6 +179,8 @@ export function filterEvents({ category = 'All', month = 'All' } = {}) {
     .filter((e) => {
       const d = new Date(e.eventDate)
       const matchCategory = category === 'All' || e.category === category
+      const matchCountry =
+        country === 'All' || (e.countries || []).includes(country)
       let matchMonth = true
       if (month === 'This month') {
         matchMonth =
@@ -184,7 +192,7 @@ export function filterEvents({ category = 'All', month = 'All' } = {}) {
       } else if (month === 'Upcoming') {
         matchMonth = d >= today
       }
-      return matchCategory && matchMonth
+      return matchCategory && matchCountry && matchMonth
     })
     .sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate))
 }

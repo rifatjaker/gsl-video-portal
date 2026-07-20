@@ -17,6 +17,16 @@ export const CATEGORIES = [
   'Career Pathways',
 ]
 
+export const COUNTRIES = [
+  'Canada',
+  'UK',
+  'Australia',
+  'USA',
+  'New Zealand',
+  'Malaysia',
+  'South Korea',
+]
+
 export const videos = [
   {
     id: 'v1',
@@ -26,6 +36,7 @@ export const videos = [
     youtubeId: 'aqz-KE-bpKQ',
     thumbnail: 'https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg',
     category: 'Visa News',
+    countries: ['Canada'],
     tags: ['Canada', 'Study Permit', 'IRCC'],
     featured: true,
     publishedAt: '2026-07-12',
@@ -39,6 +50,7 @@ export const videos = [
     youtubeId: 'ScMzIvxBSi4',
     thumbnail: 'https://i.ytimg.com/vi/ScMzIvxBSi4/hqdefault.jpg',
     category: 'Scholarship Updates',
+    countries: ['Malaysia'],
     tags: ['Malaysia', 'Scholarship', 'Tuition'],
     featured: true,
     publishedAt: '2026-07-10',
@@ -52,6 +64,7 @@ export const videos = [
     youtubeId: 'jNQXAC9IVRw',
     thumbnail: 'https://i.ytimg.com/vi/jNQXAC9IVRw/hqdefault.jpg',
     category: 'Student Experiences',
+    countries: ['South Korea'],
     tags: ['Korea', 'Campus Life', 'Seoul'],
     featured: true,
     publishedAt: '2026-07-08',
@@ -65,6 +78,7 @@ export const videos = [
     youtubeId: 'M7lc1UVf-VE',
     thumbnail: 'https://i.ytimg.com/vi/M7lc1UVf-VE/hqdefault.jpg',
     category: 'Education Fair',
+    countries: ['UK'],
     tags: ['UK', 'Education Fair', 'Open Day'],
     featured: false,
     publishedAt: '2026-07-05',
@@ -78,6 +92,7 @@ export const videos = [
     youtubeId: 'LXb3EKWsInQ',
     thumbnail: 'https://i.ytimg.com/vi/LXb3EKWsInQ/hqdefault.jpg',
     category: 'Immigration News',
+    countries: ['Australia'],
     tags: ['Australia', 'PR', 'Graduate Visa'],
     featured: false,
     publishedAt: '2026-07-02',
@@ -91,6 +106,7 @@ export const videos = [
     youtubeId: '9bZkp7q19f0',
     thumbnail: 'https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg',
     category: 'University News',
+    countries: ['New Zealand'],
     tags: ['New Zealand', 'Rankings', 'Courses'],
     featured: false,
     publishedAt: '2026-06-28',
@@ -104,6 +120,7 @@ export const videos = [
     youtubeId: 'kJQP7kiw5Fk',
     thumbnail: 'https://i.ytimg.com/vi/kJQP7kiw5Fk/hqdefault.jpg',
     category: 'Scholarship Updates',
+    countries: ['Canada', 'UK', 'Australia', 'Malaysia'],
     tags: ['Interview', 'Scholarship', 'Tips'],
     featured: false,
     publishedAt: '2026-06-22',
@@ -117,6 +134,7 @@ export const videos = [
     youtubeId: 'e-ORhEE9VVg',
     thumbnail: 'https://i.ytimg.com/vi/e-ORhEE9VVg/hqdefault.jpg',
     category: 'Study Abroad News',
+    countries: ['Canada', 'UK', 'Australia', 'USA', 'New Zealand'],
     tags: ['Timeline', 'Checklist', 'Departure'],
     featured: true,
     publishedAt: '2026-06-18',
@@ -130,6 +148,7 @@ export const videos = [
     youtubeId: 'RgKAFK5djSk',
     thumbnail: 'https://i.ytimg.com/vi/RgKAFK5djSk/hqdefault.jpg',
     category: 'Visa News',
+    countries: ['USA'],
     tags: ['USA', 'F-1', 'Embassy'],
     featured: false,
     publishedAt: '2026-06-12',
@@ -143,6 +162,7 @@ export const videos = [
     youtubeId: 'fJ9rUzIMcZQ',
     thumbnail: 'https://i.ytimg.com/vi/fJ9rUzIMcZQ/hqdefault.jpg',
     category: 'Study Abroad News',
+    countries: ['Canada', 'UK', 'Australia'],
     tags: ['Living Cost', 'Canada', 'UK', 'Australia'],
     featured: false,
     publishedAt: '2026-06-05',
@@ -164,17 +184,20 @@ export function getLatestVideos(limit = 8) {
     .slice(0, limit)
 }
 
-export function filterVideos({ query = '', category = 'All' } = {}) {
+export function filterVideos({ query = '', category = 'All', country = 'All' } = {}) {
   const q = query.trim().toLowerCase()
   return videos.filter((v) => {
     const matchCategory = category === 'All' || v.category === category
+    const matchCountry =
+      country === 'All' || (v.countries || []).includes(country)
     const matchQuery =
       !q ||
       v.title.toLowerCase().includes(q) ||
       v.description.toLowerCase().includes(q) ||
       v.tags.some((t) => t.toLowerCase().includes(q)) ||
-      v.category.toLowerCase().includes(q)
-    return matchCategory && matchQuery
+      v.category.toLowerCase().includes(q) ||
+      (v.countries || []).some((c) => c.toLowerCase().includes(q))
+    return matchCategory && matchCountry && matchQuery
   })
 }
 

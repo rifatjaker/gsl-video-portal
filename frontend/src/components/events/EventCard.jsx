@@ -32,6 +32,23 @@ export default function EventCard({ event }) {
         <h3 className="line-clamp-2 font-display text-[17px] font-semibold leading-snug text-ink group-hover:text-brand">
           {event.title}
         </h3>
+        {(event.countries || []).length > 0 && (
+          <div className="mt-1.5 flex flex-wrap items-center gap-1">
+            {(event.countries || []).slice(0, 2).map((c) => (
+              <span
+                key={c}
+                className="rounded-full bg-soft2 px-2 py-0.5 text-[10px] font-bold text-ink/70"
+              >
+                {c}
+              </span>
+            ))}
+            {(event.countries || []).length > 2 && (
+              <span className="text-[10px] font-bold text-muted">
+                +{event.countries.length - 2}
+              </span>
+            )}
+          </div>
+        )}
         <p className="mt-2 line-clamp-2 flex-1 text-sm text-muted">{event.summary}</p>
         <div className="mt-3 space-y-1.5 text-xs text-muted">
           <p className="flex items-center gap-1.5">

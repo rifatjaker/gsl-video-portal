@@ -1,20 +1,40 @@
 import { useMemo, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { CalendarRange } from 'lucide-react'
 import EventCard from '../components/events/EventCard'
+import CountryChips from '../components/video/CountryChips'
 import { EVENT_CATEGORIES, filterEvents } from '../data/mockEvents'
 
 const MONTH_FILTERS = ['Upcoming', 'This month', 'Next month', 'All']
 
+function categoryTo(cat, country) {
+  const params = new URLSearchParams()
+  if (cat && cat !== 'All') params.set('category', cat)
+  if (country && country !== 'All') params.set('country', country)
+  const qs = params.toString()
+  return qs ? `/events?${qs}` : '/events'
+}
+
 export default function Events() {
-  const [category, setCategory] = useState('All')
+  const [params] = useSearchParams()
+  const category = params.get('category') || 'All'
+  const country = params.get('country') || 'All'
   const [month, setMonth] = useState('Upcoming')
 
   const results = useMemo(
-    () => filterEvents({ category, month }),
-    [category, month],
+    () => filterEvents({ category, month, country }),
+    [category, month, country],
   )
 
   const categoryChips = ['All', ...EVENT_CATEGORIES]
+
+  const filterLabel = [
+    category !== 'All' ? category : null,
+    country !== 'All' ? country : null,
+    month !== 'All' ? month : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
@@ -31,11 +51,15 @@ export default function Events() {
               Events &amp; Fairs
             </h1>
             <p className="mt-1 text-sm font-medium text-muted">
-              Education fairs, open days, webinars &amp; counselling camps
+              Filter by destination country, when &amp; type
             </p>
           </div>
         </div>
         <span className="hidden h-1.5 min-w-24 flex-1 rounded-full bg-gradient-to-r from-brand/40 via-brand-light/30 to-transparent sm:block" />
+      </div>
+
+      <div className="mb-5">
+        <CountryChips active={country} category={category} basePath="/events" />
       </div>
 
       <div className="mb-4">
@@ -61,31 +85,36 @@ export default function Events() {
       <div className="mb-8">
         <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Type</p>
         <div className="flex flex-wrap gap-2">
-          {categoryChips.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => setCategory(cat)}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
-                category === cat
-                  ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-md shadow-red-900/20'
-                  : 'border border-line bg-white text-ink/70 hover:border-brand/40 hover:text-brand'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          {categoryChips.map((cat) => {
+            const isActive = category === cat
+            return (
+              <Link
+                key={cat}
+                to={categoryTo(cat, country)}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+                  isActive
+                    ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-md shadow-red-900/20'
+                    : 'border border-line bg-white text-ink/70 hover:border-brand/40 hover:text-brand'
+                }`}
+              >
+                {cat}
+              </Link>
+            )
+          })}
         </div>
       </div>
 
       <p className="mb-5 text-sm text-muted">
         {results.length} event{results.length === 1 ? '' : 's'}
+        {filterLabel ? ` · ${filterLabel}` : ''}
       </p>
 
       {results.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-line bg-white px-6 py-16 text-center">
           <p className="font-display text-xl font-semibold text-ink">No events found</p>
-          <p className="mt-2 text-sm text-muted">Try another month or event type filter.</p>
+          <p className="mt-2 text-sm text-muted">
+            Try another country, month, or event type filter.
+          </p>
         </div>
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

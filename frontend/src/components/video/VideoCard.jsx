@@ -19,7 +19,22 @@ export default function VideoCard({ video }) {
         </span>
       </div>
       <div className="p-4">
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand">{video.category}</p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand">{video.category}</p>
+          {(video.countries || []).slice(0, 2).map((c) => (
+            <span
+              key={c}
+              className="rounded-full bg-soft2 px-2 py-0.5 text-[10px] font-bold text-ink/70"
+            >
+              {c}
+            </span>
+          ))}
+          {(video.countries || []).length > 2 && (
+            <span className="text-[10px] font-bold text-muted">
+              +{video.countries.length - 2}
+            </span>
+          )}
+        </div>
         <h3 className="mt-1.5 line-clamp-2 font-display text-[17px] font-semibold leading-snug text-ink group-hover:text-brand">
           {video.title}
         </h3>

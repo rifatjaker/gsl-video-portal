@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Film, Search } from 'lucide-react'
 import VideoCard from '../components/video/VideoCard'
 import CategoryChips from '../components/video/CategoryChips'
+import CountryChips from '../components/video/CountryChips'
 import SearchBar from '../components/video/SearchBar'
 import Pagination from '../components/video/Pagination'
 import { filterVideos } from '../data/mockVideos'
@@ -12,6 +13,7 @@ const PER_PAGE = 6
 export default function Videos() {
   const [params] = useSearchParams()
   const category = params.get('category') || 'All'
+  const country = params.get('country') || 'All'
   const urlQuery = params.get('q') || ''
   const [query, setQuery] = useState(urlQuery)
   const [page, setPage] = useState(1)
@@ -22,15 +24,22 @@ export default function Videos() {
 
   useEffect(() => {
     setPage(1)
-  }, [query, category])
+  }, [query, category, country])
 
   const results = useMemo(
-    () => filterVideos({ query, category }),
-    [query, category],
+    () => filterVideos({ query, category, country }),
+    [query, category, country],
   )
 
   const totalPages = Math.max(1, Math.ceil(results.length / PER_PAGE))
   const pageVideos = results.slice((page - 1) * PER_PAGE, page * PER_PAGE)
+
+  const filterLabel = [
+    category !== 'All' ? category : null,
+    country !== 'All' ? country : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
@@ -47,7 +56,7 @@ export default function Videos() {
               Videos
             </h1>
             <p className="mt-1 text-sm font-medium text-muted">
-              Search and filter educational video news
+              Search and filter by category &amp; country
             </p>
           </div>
         </div>
@@ -58,19 +67,25 @@ export default function Videos() {
         <SearchBar value={query} onChange={setQuery} className="w-full max-w-md" />
         <p className="text-sm text-muted">
           {results.length} result{results.length === 1 ? '' : 's'}
-          {category !== 'All' ? ` in ${category}` : ''}
+          {filterLabel ? ` in ${filterLabel}` : ''}
           {results.length > 0 ? ` · page ${page} of ${totalPages}` : ''}
         </p>
       </div>
 
+      <div className="mb-5">
+        <CountryChips active={country} category={category} />
+      </div>
+
       <div className="mb-8">
-        <CategoryChips active={category} />
+        <CategoryChips active={category} country={country} />
       </div>
 
       {results.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-line bg-white px-6 py-16 text-center">
           <p className="font-display text-xl font-semibold text-ink">No videos found</p>
-          <p className="mt-2 text-sm text-muted">Try another keyword or clear the category filter.</p>
+          <p className="mt-2 text-sm text-muted">
+            Try another country, category, or clear the filters.
+          </p>
         </div>
       ) : (
         <>
